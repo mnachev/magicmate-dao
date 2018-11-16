@@ -5,15 +5,16 @@
  */
 package org.magicmate.impl.dao;
 
-import org.magicmate.impl.data.model.Master;
+import org.magicmate.impl.data.model.Detail;
 
 /**
  *
  * @author mnachev
  */
-public class MasterJpaDao extends AbstractGenericJpaDao<Master, Integer> {
+public class DetailJpaDao extends AbstractGenericJpaDao<Detail, Integer> {
 
-    public MasterJpaDao() {
+    public DetailJpaDao() {
         super("GenericJpaDao");
     }
+
 }

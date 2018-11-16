@@ -8,8 +8,10 @@ package org.magicmate.impl.data.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -92,4 +94,8 @@ public class Detail implements Serializable {
         this.detailCode = detailCode;
     }
 
+    @Override
+    public String toString() {
+        return "Detail{" + "detailId=" + detailId + ", master=" + master + ", detailCode=" + detailCode + '}';
+    }
 }

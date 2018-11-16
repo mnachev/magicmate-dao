@@ -30,12 +30,19 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
+ * https://wiki.eclipse.org/EclipseLink/Examples
+ * http://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm
+ */
+/**
  *
  * @author mnachev
  */
 public class AbstractGenericJpaDaoNGTest {
 
     private static MasterJpaDao masterJpaDao;
+    private Integer masterOneId;
+    private Integer masterTwoId;
+    private Integer masterThreeId;
 
     public AbstractGenericJpaDaoNGTest() {
     }
@@ -144,9 +151,8 @@ public class AbstractGenericJpaDaoNGTest {
         master.setMasterName("The 1st master item from many");
         master = masterJpaDao.persist(master);
         System.out.println("master=" + master);
-        Integer id = master.getMasterId();
-        assertNotNull(id);
-        assertEquals(id.intValue(), 1);
+        masterOneId = master.getMasterId();
+        assertNotNull(masterOneId);
     }
 
     /**
@@ -170,7 +176,15 @@ public class AbstractGenericJpaDaoNGTest {
         for (Master m : masters) {
             Integer id = m.getMasterId();
             assertNotNull(id);
-            assertEquals(id, Integer.valueOf(m.getMasterCode()));
+            switch (m.getMasterCode()) {
+                case "2":
+                    masterTwoId = m.getMasterId();
+                    break;
+
+                case "3":
+                    masterThreeId = m.getMasterId();
+                    break;
+            }
         }
     }
 
@@ -180,11 +194,10 @@ public class AbstractGenericJpaDaoNGTest {
     @Test(dependsOnMethods = {"testPersistAll"})
     public void testFindById() {
         System.out.println("findById");
-        Master master = masterJpaDao.findById(1);
+        Master master = masterJpaDao.findById(masterOneId);
         System.out.println("master=" + master);
         Integer id = master.getMasterId();
         assertNotNull(id);
-        assertEquals(id.intValue(), 1);
     }
 
     /**
@@ -197,11 +210,6 @@ public class AbstractGenericJpaDaoNGTest {
         List<Master> masters = masterJpaDao.findAll();
         System.out.println("masters=" + masters);
         assertEquals(masters.size(), 3);
-        masters.forEach((m) -> {
-            Integer id = m.getMasterId();
-            assertNotNull(id);
-            assertEquals(id, Integer.valueOf(m.getMasterCode()));
-        });
     }
 
     /**
@@ -250,7 +258,7 @@ public class AbstractGenericJpaDaoNGTest {
         boolean status = masterJpaDao.deleteById(99);
         assertFalse(status);
 
-        status = masterJpaDao.deleteById(2);
+        status = masterJpaDao.deleteById(masterTwoId);
         assertTrue(status);
 
         List<Master> masters = masterJpaDao.findAll();
@@ -266,7 +274,7 @@ public class AbstractGenericJpaDaoNGTest {
         System.out.println("delete");
 
         Master m = new Master();
-        m.setMasterId(3);
+        m.setMasterId(masterThreeId);
         m.setMasterCode("3");
         m.setMasterName("The 3rd master item");
 
@@ -277,7 +285,7 @@ public class AbstractGenericJpaDaoNGTest {
         System.out.println("masters=" + masters);
         assertEquals(masters.size(), 1);
 
-        m = masterJpaDao.findById(1);
+        m = masterJpaDao.findById(masterOneId);
         assertNotNull(m);
 
         status = masterJpaDao.delete(m);
