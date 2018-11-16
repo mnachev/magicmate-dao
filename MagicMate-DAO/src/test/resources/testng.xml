@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<!-- http://testng.org/doc/documentation-main.html#testng-xml -->
+<suite name="Test Generic DAO" verbose="1" >
+    <test name="Basic DAO Functionality" preserve-order="true">
+        <classes>
+            <class name="org.magicmate.impl.dao.AbstractGenericDaoNGTest"/>
+            <class name="org.magicmate.impl.dao.AbstractGenericJpaDaoNGTest"/>
+            <class name="org.magicmate.impl.dao.MasterDetailRelationshipsNGTest"/>
+        </classes>
+    </test>
+</suite>
